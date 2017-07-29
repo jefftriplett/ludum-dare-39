@@ -16,9 +16,11 @@ This is my first Ludum Dare 39
 
 - [Lua](https://www.lua.org/)
 - [Lua Style Guide](http://lua-users.org/wiki/LuaStyleGuide)
+- [awesome-lua](https://github.com/LewisJEllis/awesome-lua) - A curated list of quality Lua packages and resources.
 
 ### LÖVE Resources
 
 - [LÖVE](https://love2d.org/)
-- [LÖVE Helper Utilities for Massive Progression](https://github.com/vrld/hump)
 - [anim8](https://github.com/kikito/anim8) - An animation library for LÖVE
+- [awesome-love2d](https://github.com/love2d-community/awesome-love2d) - A curated list of amazingly awesome LÖVE libraries, resources and shiny things.
+- [LÖVE Helper Utilities for Massive Progression](https://github.com/vrld/hump)
