@@ -7,8 +7,8 @@ local Sti = require('lib/vendor/sti')
 
 -- Global variables
 
-local Game = {}
-local Title = {}
+local GameScreen = {}
+local TitleScreen = {}
 
 local Font = nil
 local Map = nil
@@ -32,7 +32,7 @@ local Player = {
 
 function love.load()
     Gamestate.registerEvents()
-    Gamestate.switch(Title)
+    Gamestate.switch(TitleScreen)
 
     Font = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 32)
     love.graphics.setFont(Font)
@@ -126,27 +126,27 @@ function love.load()
 end
 
 
--- Title section
+-- TitleScreen handles our main title screen
 
-function Title:draw()
-    love.graphics.print('Title:draw()', 16, 16)
+function TitleScreen:draw()
+    love.graphics.print('TitleScreen:draw()', 16, 16)
     love.graphics.print('Press Enter to continue', 16, 32)
 end
 
 
-function Title:keyreleased(key, code)
+function TitleScreen:keyreleased(key, code)
     if key == 'return' then
-        Gamestate.switch(Game)
+        Gamestate.switch(GameScreen)
     end
 end
 
 
--- Main game section
+-- GameScreen handles our actual game play
 
-function Game:draw()
+function GameScreen:draw()
     -- Draw hud
     love.graphics.setColor(255, 255, 255)
-    love.graphics.print('Game:draw()', 16, 16)
+    love.graphics.print('GameScreen:draw()', 16, 16)
 
     fps = love.timer.getFPS()
     love.graphics.print(
@@ -170,7 +170,7 @@ function Game:draw()
 end
 
 
-function Game:update(deltatime)
+function GameScreen:update(deltatime)
     -- We only want to animate the player animation when we are moving
     animate_player = false
 
@@ -207,14 +207,14 @@ function Game:update(deltatime)
 end
 
 
-function Game:keypressed(key, code)
+function GameScreen:keypressed(key, code)
     if love.keyboard.isDown('escape') or love.keyboard.isDown('q') then
         love.event.quit()
     end
 end
 
 
-function Game:quit()
+function GameScreen:quit()
     print('Thank you for playing!')
     return false
 end
