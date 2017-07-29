@@ -14,9 +14,9 @@ local Player = {
     width = 64,
     height = 64,
     speed = 128,
+    durations = 0.5  -- or this can be {0.5, 0.1, ...} based on each frame
 }
 
-local Animation
 local Image
 
 
@@ -28,10 +28,28 @@ function love.load()
 
     Image = love.graphics.newImage('assets/sokoban_tilesheet.png')
     local grid = Anim8.newGrid(64, 64, Image:getWidth(), Image:getHeight())
-    Animation = Anim8.newAnimation(
-        grid('1-3', 6),
-        0.5
-    )
+
+    Player.animations = {
+        down = Anim8.newAnimation(
+            grid('1-3', 6),
+            Player.durations
+        ),
+        up = Anim8.newAnimation(
+            grid('4-6', 6),
+            Player.durations
+        ),
+        right = Anim8.newAnimation(
+            grid('1-3', 8),
+            Player.durations
+        ),
+        left = Anim8.newAnimation(
+            grid('4-6', 8),
+            Player.durations
+        ),
+    }
+
+    -- Default player to facing us
+    Player.animation = Player.animations.down
 end
 
 
@@ -71,32 +89,32 @@ function Game:draw()
     )
 
     -- Draw our player
-    Animation:draw(Image, Player.x, Player.y)
+    Player.animation:draw(Image, Player.x, Player.y)
 end
 
 
 function Game:update(deltatime)
     if love.keyboard.isDown('up') or love.keyboard.isDown('w') then
         Player.y = Player.y - Player.speed * deltatime
-        -- Player.animation = Player.animations.up
+        Player.animation = Player.animations.up
     end
 
     if love.keyboard.isDown('down') or love.keyboard.isDown('s') then
         Player.y = Player.y + Player.speed * deltatime
-        -- Player.animation = Player.animations.down
+        Player.animation = Player.animations.down
     end
 
     if love.keyboard.isDown('left') or love.keyboard.isDown('a') then
         Player.x = Player.x - Player.speed * deltatime
-        -- Player.animation = Player.animations.left
+        Player.animation = Player.animations.left
     end
 
     if love.keyboard.isDown('right') or love.keyboard.isDown('d') then
         Player.x = Player.x + Player.speed * deltatime
-        -- Player.animation = Player.animations.right
+        Player.animation = Player.animations.right
     end
 
-    Animation:update(deltatime)
+    Player.animation:update(deltatime)
 end
 
 
