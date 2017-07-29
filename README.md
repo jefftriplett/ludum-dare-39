@@ -24,7 +24,9 @@ This is my first Ludum Dare 39
 - [anim8](https://github.com/kikito/anim8) - An animation library for LÖVE
 - [awesome-love2d](https://github.com/love2d-community/awesome-love2d) - A curated list of amazingly awesome LÖVE libraries, resources and shiny things.
 - [LÖVE Helper Utilities for Massive Progression](https://github.com/vrld/hump)
+- [Simple-Tiled-Implementation (STI)](https://github.com/karai17/Simple-Tiled-Implementation) - Tiled library for LÖVE
 
 ### Resources for Overcoming the Impossible (Aka Googling)
 
 - [Animation while moving sprite?](https://love2d.org/forums/viewtopic.php?t=28282) This forum thread helped me figure out what I was doing wrong with my directional animation.
+- [Using Tiled Maps in LÖVE](http://lua.space/gamedev/using-tiled-maps-in-love) This tutorial shows how to attach a player sprite to the map via a layer and control their movement.
