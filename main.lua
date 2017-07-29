@@ -1,5 +1,6 @@
 -- Modules
 
+local Anim8 = require('lib/vendor/anim8/anim8')
 local Gamestate = require 'lib/vendor/hump/gamestate'
 
 

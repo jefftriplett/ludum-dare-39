@@ -21,3 +21,4 @@ This is my first Ludum Dare 39
 
 - [LÖVE](https://love2d.org/)
 - [LÖVE Helper Utilities for Massive Progression](https://github.com/vrld/hump)
+- [anim8](https://github.com/kikito/anim8) - An animation library for LÖVE
