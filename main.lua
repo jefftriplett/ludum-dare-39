@@ -43,15 +43,7 @@ end
 -- Main game section
 
 function Game:draw()
-    love.graphics.setColor(128, 255, 128)
-    love.graphics.rectangle(
-        'fill',
-        Player.x,
-        Player.y,
-        Player.width,
-        Player.height
-    )
-
+    -- Draw hud
     love.graphics.setColor(255, 255, 255)
     love.graphics.print('Game:draw()', 16, 16)
 
@@ -67,19 +59,28 @@ function Game:draw()
         16,
         32
     )
+
+    -- Draw our player
+    Animation:draw(Image, Player.x, Player.y)
 end
 
 
 function Game:update(deltatime)
     if love.keyboard.isDown('up') or love.keyboard.isDown('w') then
         Player.y = Player.y - Player.speed * deltatime
+        -- Player.animation = Player.animations.up
     elseif love.keyboard.isDown('down') or love.keyboard.isDown('s') then
         Player.y = Player.y + Player.speed * deltatime
+        -- Player.animation = Player.animations.down
     elseif love.keyboard.isDown('left') or love.keyboard.isDown('a') then
         Player.x = Player.x - Player.speed * deltatime
+        -- Player.animation = Player.animations.left
     elseif love.keyboard.isDown('right') or love.keyboard.isDown('d') then
         Player.x = Player.x + Player.speed * deltatime
+        -- Player.animation = Player.animations.right
     end
+
+    Animation:update(deltatime)
 end
 
 
