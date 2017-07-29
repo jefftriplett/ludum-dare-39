@@ -14,7 +14,9 @@ local Player = {
     width = 64,
     height = 64,
     speed = 128,
-    durations = 0.5  -- or this can be {0.5, 0.1, ...} based on each frame
+    durations = 0.5,  -- or this can be {0.5, 0.1, ...} based on each frame
+    animation = nil,
+    animations = nil,
 }
 
 local Image
@@ -31,19 +33,39 @@ function love.load()
 
     Player.animations = {
         down = Anim8.newAnimation(
-            grid('1-3', 6),
+            grid(
+                1, 6,
+                2, 6,
+                1, 6,
+                3, 6
+            ),
             Player.durations
         ),
         up = Anim8.newAnimation(
-            grid('4-6', 6),
+            grid(
+                4, 6,
+                5, 6,
+                4, 6,
+                6, 6
+            ),
             Player.durations
         ),
         right = Anim8.newAnimation(
-            grid('1-3', 8),
+            grid(
+                1, 8,
+                2, 8,
+                1, 8,
+                3, 8
+            ),
             Player.durations
         ),
         left = Anim8.newAnimation(
-            grid('4-6', 8),
+            grid(
+                4, 8,
+                5, 8,
+                4, 8,
+                5, 8
+            ),
             Player.durations
         ),
     }
