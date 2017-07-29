@@ -11,10 +11,13 @@ local Game = {}
 local Player = {
     x = 0,
     y = 0,
-    width = 16,
-    height = 16,
-    speed = 64,
+    width = 64,
+    height = 64,
+    speed = 128,
 }
+
+local Animation
+local Image
 
 
 -- Love section
@@ -22,6 +25,13 @@ local Player = {
 function love.load()
     Gamestate.registerEvents()
     Gamestate.switch(Title)
+
+    Image = love.graphics.newImage('assets/sokoban_tilesheet.png')
+    local grid = Anim8.newGrid(64, 64, Image:getWidth(), Image:getHeight())
+    Animation = Anim8.newAnimation(
+        grid('1-3', 6),
+        0.5
+    )
 end
 
 
