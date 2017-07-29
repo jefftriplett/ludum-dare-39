@@ -7,7 +7,7 @@ function love.conf(t)
     t.externalstorage = false           -- True to save files (and read from the save directory) in external storage on Android (boolean)
     t.gammacorrect = false              -- Enable gamma-correct rendering, when supported by the system (boolean)
 
-    t.window.title = "Ludum Dare 39"    -- The window title (string)
+    t.window.title = "Ludum Dare 39: Running out of Power"  -- The window title (string)
     t.window.icon = "assets/images/playerFace_dark.png"  -- Filepath to an image to use as the window's icon (string)
     t.window.width = 800                -- The window width (number)
     t.window.height = 600               -- The window height (number)
