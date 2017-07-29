@@ -9,7 +9,8 @@ This is my first Ludum Dare 39
 - [ShoeBox](https://renderhjs.net/shoebox/) for editing images
 - [Sublime Text 3](https://www.sublimetext.com/)
 - [Version control via Tower](https://www.git-tower.com/mac/)
-- [Emoji commit inspiration](https://github.com/slashsBin/styleguide-git-commit-message)
+- [Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
+- [Emoji Styleguide Git Commit](https://github.com/slashsBin/styleguide-git-commit-message)
 
 ### Lua Resources
 
