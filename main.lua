@@ -1,25 +1,31 @@
 -- Modules
 
 local Anim8 = require('lib/vendor/anim8/anim8')
-local Gamestate = require 'lib/vendor/hump/gamestate'
+local Gamestate = require('lib/vendor/hump/gamestate')
+local Sti = require('lib/vendor/sti')
 
 
 -- Global variables
 
-local Title = {}
 local Game = {}
+local Title = {}
+
+local Font = nil
+local Map = nil
+local World = nil
+
 local Player = {
     x = 0,
     y = 0,
+    rotation = 0,
     width = 64,
     height = 64,
     speed = 128,
     durations = 0.5,  -- or this can be {0.5, 0.1, ...} based on each frame
-    animation = nil,
-    animations = nil,
+    animation = nil,  -- our index for holding which Quad we are displaying
+    animations = nil,  -- our Quads
+    spritesheet = nil,  -- our image spritesheet which holds all of our images
 }
-
-local Image
 
 
 -- Love section
@@ -28,8 +34,11 @@ function love.load()
     Gamestate.registerEvents()
     Gamestate.switch(Title)
 
-    Image = love.graphics.newImage('assets/sokoban_tilesheet.png')
-    local grid = Anim8.newGrid(64, 64, Image:getWidth(), Image:getHeight())
+    Font = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 32)
+    love.graphics.setFont(Font)
+
+    Player.spritesheet = love.graphics.newImage('assets/images/sokoban_tilesheet.png')
+    local grid = Anim8.newGrid(64, 64, Player.spritesheet:getWidth(), Player.spritesheet:getHeight())
 
     Player.animations = {
         down = Anim8.newAnimation(
@@ -72,6 +81,48 @@ function love.load()
 
     -- Default player to facing us
     Player.animation = Player.animations.down
+
+    love.physics.setMeter(64)
+
+    Map = Sti('assets/levels/level0001.lua', {'box2d'})
+
+    World = love.physics.newWorld(0, 0)
+
+    -- Prepare collision objects
+    Map:box2d_init(World)
+
+    Map:addCustomLayer('Sprite Layer', 3)
+
+    local sprite_layer = Map.layers['Sprite Layer']
+
+    -- Attach our player to the Map layer
+    sprite_layer.sprites = {
+        player = Player
+    }
+
+    -- Update callback for Custom Layer
+    function sprite_layer:update(deltatime)
+        for _, sprite in pairs(self.sprites) do
+            -- if sprite.rotation then
+            --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
+            -- end
+        end
+    end
+
+    -- Draw callback for Custom Layer
+    function sprite_layer:draw()
+        for _, sprite in pairs(self.sprites) do
+            local x = math.floor(sprite.x)
+            local y = math.floor(sprite.y)
+            local rotation = sprite.rotation
+            Player.animation:draw(
+                sprite.spritesheet,
+                x,
+                y,
+                rotation
+            )
+        end
+    end
 end
 
 
@@ -100,7 +151,7 @@ function Game:draw()
     fps = love.timer.getFPS()
     love.graphics.print(
         'fps: '..('%3d'):format(fps),
-        love.graphics.getWidth() - 64,
+        love.graphics.getWidth() - 96, -- eyeballed
         16
     )
 
@@ -110,33 +161,49 @@ function Game:draw()
         32
     )
 
-    -- Draw our player
-    Player.animation:draw(Image, Player.x, Player.y)
+    -- Draw our Map
+    Map:draw(0, 64)
+
+    -- Draw Collision Map (useful for debugging)
+    love.graphics.setColor(0, 0, 255)
+    Map:box2d_draw(0, 64)
 end
 
 
 function Game:update(deltatime)
+    -- We only want to animate the player animation when we are moving
+    animate_player = false
+
     if love.keyboard.isDown('up') or love.keyboard.isDown('w') then
         Player.y = Player.y - Player.speed * deltatime
         Player.animation = Player.animations.up
+        animate_player = true
     end
 
     if love.keyboard.isDown('down') or love.keyboard.isDown('s') then
         Player.y = Player.y + Player.speed * deltatime
         Player.animation = Player.animations.down
+        animate_player = true
     end
 
     if love.keyboard.isDown('left') or love.keyboard.isDown('a') then
         Player.x = Player.x - Player.speed * deltatime
         Player.animation = Player.animations.left
+        animate_player = true
     end
 
     if love.keyboard.isDown('right') or love.keyboard.isDown('d') then
         Player.x = Player.x + Player.speed * deltatime
         Player.animation = Player.animations.right
+        animate_player = true
     end
 
-    Player.animation:update(deltatime)
+    if animate_player then
+        Player.animation:update(deltatime)
+    end
+
+    -- Update our Map to keep everything in sync
+    Map:update(deltatime)
 end
 
 
