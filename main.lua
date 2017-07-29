@@ -79,13 +79,19 @@ function Game:update(deltatime)
     if love.keyboard.isDown('up') or love.keyboard.isDown('w') then
         Player.y = Player.y - Player.speed * deltatime
         -- Player.animation = Player.animations.up
-    elseif love.keyboard.isDown('down') or love.keyboard.isDown('s') then
+    end
+
+    if love.keyboard.isDown('down') or love.keyboard.isDown('s') then
         Player.y = Player.y + Player.speed * deltatime
         -- Player.animation = Player.animations.down
-    elseif love.keyboard.isDown('left') or love.keyboard.isDown('a') then
+    end
+
+    if love.keyboard.isDown('left') or love.keyboard.isDown('a') then
         Player.x = Player.x - Player.speed * deltatime
         -- Player.animation = Player.animations.left
-    elseif love.keyboard.isDown('right') or love.keyboard.isDown('d') then
+    end
+
+    if love.keyboard.isDown('right') or love.keyboard.isDown('d') then
         Player.x = Player.x + Player.speed * deltatime
         -- Player.animation = Player.animations.right
     end
