@@ -36,6 +36,12 @@ end
 
 function Game:draw()
     love.graphics.print('Game:draw()', 16, 16)
+    fps = love.timer.getFPS()
+    love.graphics.print(
+        'fps: '..('%3d'):format(fps),
+        love.graphics.getWidth() - 64,
+        16
+    )
 end
 
 
