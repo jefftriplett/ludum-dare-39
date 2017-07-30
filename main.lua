@@ -3,6 +3,7 @@
 local Anim8 = require('lib.vendor.anim8.anim8')
 local Bump = require('lib.vendor.bump.bump')
 local Gamestate = require('lib.vendor.hump.gamestate')
+local Inspect = require('lib.vendor.inspect.inspect')
 local Sti = require('lib.vendor.sti')
 
 -- Global variables
@@ -31,19 +32,6 @@ local Player = {
     animations = nil,  -- our Quads
     spritesheet = nil,  -- our image spritesheet which holds all of our images
 }
-
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
 
 
 -- Love section
@@ -242,7 +230,7 @@ function GameScreen:update(deltatime)
     if collision_len > 0 then
         if Debug then
             print(collision_len)
-            print(dump(collisions))
+            print(Inspect(collisions))
         end
     end
 
