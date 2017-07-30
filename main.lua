@@ -149,21 +149,6 @@ function love.load()
 end
 
 
--- TitleScreen handles our main title screen
-
-function TitleScreen:draw()
-    love.graphics.print('TitleScreen:draw()', 16, 16)
-    love.graphics.print('Press Enter to continue', 16, 32)
-end
-
-
-function TitleScreen:keyreleased(key, code)
-    if key == 'return' then
-        Gamestate.switch(GameScreen)
-    end
-end
-
-
 -- GameScreen handles our actual game play
 
 function GameScreen:draw()
@@ -240,4 +225,19 @@ end
 function GameScreen:quit()
     print('Thank you for playing!')
     return false
+end
+
+
+-- TitleScreen handles our main title screen
+
+function TitleScreen:draw()
+    love.graphics.print('TitleScreen:draw()', 16, 16)
+    love.graphics.print('Press Enter to continue', 16, 32)
+end
+
+
+function TitleScreen:keyreleased(key, code)
+    if key == 'return' then
+        Gamestate.switch(GameScreen)
+    end
 end
