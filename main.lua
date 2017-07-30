@@ -84,7 +84,7 @@ function love.load()
     -- Default player to facing us
     Player.animation = Player.animations.down
 
-    love.physics.setMeter(64)
+    love.physics.setMeter(32)
 
     Map = Sti('assets/levels/level0001.lua', {'box2d'})
 
@@ -93,7 +93,7 @@ function love.load()
     -- Prepare collision objects
     Map:box2d_init(World)
 
-    Map:addCustomLayer('Sprite Layer', 3)
+    Map:addCustomLayer('Sprite Layer', 4)
 
     local sprite_layer = Map.layers['Sprite Layer']
 
@@ -170,6 +170,7 @@ function GameScreen:draw()
     )
 
     -- Draw our Map
+    love.graphics.setColor(255, 255, 255)
     Map:draw(0, 64)
 
     -- Draw Collision Map (useful for debugging)
