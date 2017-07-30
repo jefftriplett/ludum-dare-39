@@ -32,6 +32,12 @@ return {
       tilecount = 104,
       tiles = {
         {
+          id = 0,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
           id = 1,
           properties = {
             ["collidable"] = true
@@ -99,6 +105,12 @@ return {
         },
         {
           id = 12,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 13,
           properties = {
             ["collidable"] = false
           }
@@ -176,6 +188,12 @@ return {
           }
         },
         {
+          id = 26,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
           id = 27,
           properties = {
             ["collidable"] = true
@@ -248,6 +266,72 @@ return {
           }
         },
         {
+          id = 39,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 40,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 41,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 42,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 43,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 44,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 45,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 46,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 47,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 48,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 49,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
           id = 50,
           properties = {
             ["collidable"] = false
@@ -257,6 +341,42 @@ return {
           id = 51,
           properties = {
             ["collidable"] = false
+          }
+        },
+        {
+          id = 52,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 53,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 54,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 55,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 56,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 57,
+          properties = {
+            ["collidable"] = true
           }
         },
         {
@@ -302,6 +422,72 @@ return {
           }
         },
         {
+          id = 65,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 66,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 67,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 68,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 69,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 70,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 71,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 72,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 73,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 74,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 75,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
           id = 76,
           properties = {
             ["collidable"] = false
@@ -311,6 +497,42 @@ return {
           id = 77,
           properties = {
             ["collidable"] = false
+          }
+        },
+        {
+          id = 78,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 79,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 80,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 81,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 82,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 83,
+          properties = {
+            ["collidable"] = true
           }
         },
         {
@@ -353,6 +575,42 @@ return {
           id = 90,
           properties = {
             ["collidable"] = false
+          }
+        },
+        {
+          id = 91,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 92,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 93,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 94,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 95,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 96,
+          properties = {
+            ["collidable"] = true
           }
         },
         {
@@ -412,15 +670,41 @@ return {
       opacity = 1,
       offsetx = 0,
       offsety = 0,
+      properties = {
+        ["collidable"] = false
+      },
+      encoding = "lua",
+      data = {
+        90, 90, 90, 90, 0, 0, 0, 0,
+        90, 90, 103, 90, 0, 0, 0, 0,
+        90, 90, 90, 90, 90, 90, 0, 0,
+        90, 103, 90, 90, 90, 90, 0, 0,
+        90, 90, 90, 90, 90, 90, 0, 0,
+        90, 90, 90, 90, 90, 90, 0, 0,
+        90, 90, 90, 90, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "tilelayer",
+      name = "walls",
+      x = 0,
+      y = 0,
+      width = 8,
+      height = 8,
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
       properties = {},
       encoding = "lua",
       data = {
         98, 98, 98, 98, 0, 0, 0, 0,
-        98, 90, 90, 98, 0, 0, 0, 0,
-        98, 90, 90, 98, 98, 98, 0, 0,
-        98, 90, 90, 90, 90, 98, 0, 0,
-        98, 90, 90, 90, 90, 98, 0, 0,
-        98, 90, 90, 98, 98, 98, 0, 0,
+        98, 0, 0, 98, 0, 0, 0, 0,
+        98, 0, 0, 98, 98, 98, 0, 0,
+        98, 0, 0, 0, 0, 98, 0, 0,
+        98, 0, 0, 0, 0, 98, 0, 0,
+        98, 0, 0, 98, 98, 98, 0, 0,
         98, 98, 98, 98, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0
       }
@@ -442,8 +726,8 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 26, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
-        0, 26, 0, 1, 0, 0, 0, 0,
-        0, 0, 0, 1, 0, 0, 0, 0,
+        0, 26, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0
@@ -465,13 +749,13 @@ return {
       },
       encoding = "lua",
       data = {
-        1, 1, 1, 1, 13, 13, 0, 0,
-        1, 1, 1, 1, 13, 13, 0, 0,
-        1, 1, 1, 1, 1, 1, 0, 0,
-        1, 20, 1, 1, 1, 1, 0, 0,
-        1, 1, 1, 7, 1, 1, 0, 0,
-        1, 1, 1, 1, 1, 1, 0, 0,
-        1, 1, 1, 1, 13, 13, 13, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 7, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 7, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0
       }
     },
@@ -490,13 +774,15 @@ return {
           name = "Player",
           type = "",
           shape = "rectangle",
-          x = 160,
-          y = 240,
-          width = 32,
-          height = 32,
+          x = 128,
+          y = 192,
+          width = 64,
+          height = 64,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["collidable"] = true
+          }
         }
       }
     }
