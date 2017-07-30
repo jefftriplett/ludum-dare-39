@@ -269,6 +269,10 @@ function GameScreen:keypressed(key, code)
     if love.keyboard.isDown('escape') or love.keyboard.isDown('q') then
         love.event.quit()
     end
+
+    if love.keyboard.isDown('tab') then
+        Debug = not Debug
+    end
 end
 
 
