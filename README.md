@@ -1,6 +1,8 @@
 # Ludum Dare 39
 
-This is my first Ludum Dare 39
+This is my first Ludum Dare 39. It has a Sokoban game heavily inspired by all Sokoban games before it.
+
+![work-in-progress screenshot](https://www.evernote.com/shard/s27/sh/3deb7c08-ace8-4cd5-8ef0-03755862c40f/bd721d0787482c3b/res/3e96319b-63ea-44ea-a003-225e024827ac/skitch.png)
 
 ## Resources
 
