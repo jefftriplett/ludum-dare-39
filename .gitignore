@@ -80,3 +80,8 @@ luac.out
 *.x86_64
 *.hex
 
+# Our projects
+assets/tmux
+research
+screens
+NOTES.md
