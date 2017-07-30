@@ -14,6 +14,7 @@ return {
     {
       name = "sokoban_tilesheet",
       firstgid = 1,
+      filename = "../tmux/sokoban_tilesheet.tsx",
       tilewidth = 64,
       tileheight = 64,
       spacing = 0,
@@ -781,7 +782,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = false
           }
         }
       }
