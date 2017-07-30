@@ -11,6 +11,7 @@ This is my first Ludum Dare 39
 - [Version control via Tower](https://www.git-tower.com/mac/)
 - [Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
 - [Emoji Styleguide Git Commit](https://github.com/slashsBin/styleguide-git-commit-message)
+- [Scott Lindhurst's Sokoban Levels](http://sneezingtiger.com/sokoban/levels.html)
 
 ### Lua Resources
 
@@ -29,4 +30,5 @@ This is my first Ludum Dare 39
 ### Resources for Overcoming the Impossible (Aka Googling)
 
 - [Animation while moving sprite?](https://love2d.org/forums/viewtopic.php?t=28282) This forum thread helped me figure out what I was doing wrong with my directional animation.
+- [How to display animation while moving a sprite?](https://stackoverflow.com/questions/15488304/how-to-display-animation-while-moving-a-sprite)
 - [Using Tiled Maps in LÖVE](http://lua.space/gamedev/using-tiled-maps-in-love) This tutorial shows how to attach a player sprite to the map via a layer and control their movement.
