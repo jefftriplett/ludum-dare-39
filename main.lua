@@ -15,8 +15,10 @@ local Map = nil
 local World = nil
 
 local Player = {
-    x = 0,
-    y = 0,
+    x = nil,
+    y = nil,
+    offset_x = math.floor(64 / 2),
+    offset_y = math.floor(64 / 1.35),
     rotation = 0,
     width = 64,
     height = 64,
@@ -95,6 +97,15 @@ function love.load()
 
     local sprite_layer = Map.layers['Sprite Layer']
 
+    for k, object in pairs(Map.objects) do
+        if object.name == 'Player' then
+            spawn_point = object
+            Player.x = spawn_point.x
+            Player.y = spawn_point.y
+            break
+        end
+    end
+
     -- Attach our player to the Map layer
     sprite_layer.sprites = {
         player = Player
@@ -112,17 +123,29 @@ function love.load()
     -- Draw callback for Custom Layer
     function sprite_layer:draw()
         for _, sprite in pairs(self.sprites) do
-            local x = math.floor(sprite.x)
-            local y = math.floor(sprite.y)
-            local rotation = sprite.rotation
             Player.animation:draw(
                 sprite.spritesheet,
-                x,
-                y,
-                rotation
+                math.floor(sprite.x),
+                math.floor(sprite.y),
+                sprite.rotation,
+                1,
+                1,
+                sprite.offset_x,
+                sprite.offset_y
+            )
+
+            -- Temporarily draw a point at our location so we know
+            -- that our sprite is offset properly
+            love.graphics.setPointSize(5)
+            love.graphics.points(
+                math.floor(sprite.x),
+                math.floor(sprite.y)
             )
         end
     end
+
+    -- Remove unneeded object layer
+    Map:removeLayer('Spawn Point')
 end
 
 
