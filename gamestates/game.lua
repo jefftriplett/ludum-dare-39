@@ -170,7 +170,8 @@ function GameScreen:draw()
     )
 
     love.graphics.print(
-        'Player: (' .. ('%d'):format(Player.x) .. ', ' .. ('%d'):format(Player.y) .. ')',
+        'Map Tile: (x:' .. ('%d'):format(Player.x / 64) .. ', y:' .. ('%d'):format(Player.y / 64) .. '); ' ..
+        'Player: (x:' .. ('%d'):format(Player.x) .. ', y:' .. ('%d'):format(Player.y) .. ')',
         16,
         32
     )
