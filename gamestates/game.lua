@@ -15,6 +15,52 @@ local Map = nil
 local World = nil
 local Debug = false  -- TODO: Change before release
 
+local Levels = {
+    {
+        title = "David Skinner's Microban Level 1",
+        filename = 'levels/level0001.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 2",
+        filename = 'levels/level0002.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 3",
+        filename = 'levels/level0003.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 4",
+        filename = 'levels/level0004.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 5",
+        filename = 'levels/level0005.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 6",
+        filename = 'levels/level0006.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 7",
+        filename = 'levels/level0007.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 8",
+        filename = 'levels/level0008.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 9",
+        filename = 'levels/level0009.lua',
+    },
+    {
+        title = "David Skinner's Microban Level 10",
+        filename = 'levels/level0010.lua',
+    },
+}
+
+local StartingLevel = 1
+local CurrentLevel = StartingLevel
+
 local Player = {
     x = nil,
     y = nil,
@@ -37,7 +83,7 @@ function GameScreen:draw()
     -- Draw hud
     love.graphics.setColor(255, 255, 255)
     -- love.graphics.setColor(89, 106, 108)
-    love.graphics.print('GameScreen:draw()', 16, 16)
+    love.graphics.print(Levels[CurrentLevel].title, 16, 16)
 
     fps = love.timer.getFPS()
     love.graphics.print(
@@ -117,7 +163,7 @@ function GameScreen:enter()
 
     love.physics.setMeter(32)
 
-    GameScreen:load_level('levels/level0001.lua')
+    GameScreen:load_level(Levels[CurrentLevel].filename)
 end
 
 
@@ -136,43 +182,53 @@ function GameScreen:keypressed(key, code)
 
     if Debug then
         if love.keyboard.isDown('1') then
-            GameScreen:load_level('levels/level0001.lua')
+            CurrentLevel = 1
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('2') then
-            GameScreen:load_level('levels/level0002.lua')
+            CurrentLevel = 2
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('3') then
-            GameScreen:load_level('levels/level0003.lua')
+            CurrentLevel = 3
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('4') then
-            GameScreen:load_level('levels/level0004.lua')
+            CurrentLevel = 4
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('5') then
-            GameScreen:load_level('levels/level0005.lua')
+            CurrentLevel = 5
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('6') then
-            GameScreen:load_level('levels/level0006.lua')
+            CurrentLevel = 6
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('7') then
-            GameScreen:load_level('levels/level0007.lua')
+            CurrentLevel = 7
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('8') then
-            GameScreen:load_level('levels/level0008.lua')
+            CurrentLevel = 8
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('9') then
-            GameScreen:load_level('levels/level0009.lua')
+            CurrentLevel = 9
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
 
         if love.keyboard.isDown('0') then
-            GameScreen:load_level('levels/level0010.lua')
+            CurrentLevel = 10
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
     end
 end
