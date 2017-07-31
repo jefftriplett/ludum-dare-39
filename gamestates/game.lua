@@ -272,8 +272,8 @@ function GameScreen:load_level(filename)
         print(Inspect(object))
         if object.name == 'Player' then
             spawn_point = object
-            Player.x = spawn_point.x
-            Player.y = spawn_point.y
+            Player.x = spawn_point.x + 16
+            Player.y = spawn_point.y + 32
             World:add(Player, Player.x, Player.y, Player.width, Player.height)
             break
         end
