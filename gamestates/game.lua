@@ -260,6 +260,10 @@ function GameScreen:keypressed(key, code)
     if love.keyboard.isDown('tab') then
         Debug = not Debug
     end
+
+    if love.keyboard.isDown('p') then
+        Gamestate.push(gamestates.pause)
+    end
 end
 
 

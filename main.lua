@@ -9,8 +9,9 @@ local Gamestate = require('lib.vendor.hump.gamestate')
 local Font = nil
 
 gamestates = {}
-gamestates.title = require('gamestates.title')
 gamestates.game = require('gamestates.game')
+gamestates.pause = require('gamestates.pause')
+gamestates.title = require('gamestates.title')
 
 
 -- Love section
