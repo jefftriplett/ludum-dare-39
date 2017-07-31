@@ -81,7 +81,4 @@ luac.out
 *.hex
 
 # Our projects
-assets/tmux
-research
-screens
-NOTES.md
+working
