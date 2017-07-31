@@ -4,19 +4,27 @@
 local Gamestate = require('lib.vendor.hump.gamestate')
 
 local Font = nil
+local TitleFont = nil
+local SubTitleFont = nil
 
 local TitleScreen = Gamestate.new()
 
 
 function TitleScreen:draw()
-    love.graphics.print('TitleScreen:draw()', 16, 16)
-    love.graphics.print('Press Enter to continue', 16, 32)
+    local width = love.graphics.getWidth()
+    local height = love.graphics.getHeight()
+
+    love.graphics.setFont(TitleFont)
+    love.graphics.printf('LD39: Sokoban', 0, height / 3, width, 'center')
+
+    love.graphics.setFont(SubTitleFont)
+    love.graphics.printf('Press Enter to continue', 0, (height / 3) * 2, width, 'center')
 end
 
 
 function TitleScreen:enter()
-    Font = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 32)
-    love.graphics.setFont(Font)
+    TitleFont = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 64)
+    SubTitleFont = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 32)
 end
 
 
