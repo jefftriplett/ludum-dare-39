@@ -266,6 +266,10 @@ function GameScreen:load_level(filename)
 
     local object_group = Map.layers['objectgroup']
 
+    print('object_group')
+    print(Inspect(object_group))
+    print('----')
+    print('object_group.objects')
     print(Inspect(object_group.objects))
 
     for k, object in pairs(Map.objects) do
