@@ -84,6 +84,9 @@ local Player = {
 local Targets = nil
 local Entities = nil
 
+local TotalTargets = nil
+local CurrentTargets = nil
+
 local Entity = Class('Entity')
 
 function Entity:initialize()
@@ -132,6 +135,15 @@ function Entity:tile_id()
         + 1
 end
 
+function Entity:covers_target()
+    if Targets[self:tile_id()] then
+        return true
+    else
+        return false
+    end
+end
+
+
 local Box = Class('Box', Entity)
 
 function Box:initialize()
@@ -149,8 +161,18 @@ function GameScreen:draw()
     fps = love.timer.getFPS()
     love.graphics.print(
         'fps: '..('%3d'):format(fps),
-        love.graphics.getWidth() - 96, -- eyeballed
+        love.graphics.getWidth() - 128, -- eyeballed
         16
+    )
+    love.graphics.print(
+        'Targets: '..('%3d'):format(TotalTargets),
+        love.graphics.getWidth() - 128, -- eyeballed
+        32
+    )
+    love.graphics.print(
+        'Current: '..('%3d'):format(CurrentTargets),
+        love.graphics.getWidth() - 128, -- eyeballed
+        48
     )
 
     love.graphics.print(
@@ -235,6 +257,10 @@ function GameScreen:keypressed(key, code)
 
     if love.keyboard.isDown('`') or love.keyboard.isDown('tab') then
         Debug = not Debug
+    end
+
+    if love.keyboard.isDown('r') then
+        GameScreen:load_level(Levels[CurrentLevel].filename)
     end
 
     if love.keyboard.isDown('p') then
@@ -332,21 +358,20 @@ function GameScreen:load_level(filename)
         entities = Entities
     }
 
-    -- Update callback for Custom Layer
+    -- Update callback for our Spite Layer
     function sprite_layer:update(deltatime)
         for _, sprite in pairs(self.sprites) do
             if sprite.type ~= 'player' then
                 for _, entity_sprite in pairs(sprite) do
-                    if Targets[entity_sprite:tile_id()] ~= nil then
+                    if entity_sprite:covers_target() and entity_sprite.animation ~= entity_sprite.animations.on_target then
                         entity_sprite.animation = entity_sprite.animations.on_target
-                    else
+                        CurrentTargets = CurrentTargets + 1
+                    elseif not entity_sprite:covers_target() and entity_sprite.animation ~= entity_sprite.animations.default then
                         entity_sprite.animation = entity_sprite.animations.default
+                        CurrentTargets = CurrentTargets - 1
                     end
                 end
             end
-            -- if sprite.rotation then
-            --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
-            -- end
         end
     end
 
@@ -414,12 +439,15 @@ function GameScreen:load_level(filename)
     -- TODO: We need to refactor / move this target finding code
 
     Targets = {}
+    CurrentTargets = 0
+    TotalTargets = 0
 
     for y, target in ipairs(target_group.data) do
         if next(target) ~= nil then
             for x, tile in pairs(target) do
                 tile_index = x + (y * target_group.width) + 1
                 Targets[tile_index] = true
+                TotalTargets = TotalTargets + 1
             end
         end
     end
@@ -493,6 +521,15 @@ function GameScreen:update(deltatime)
 
                 collision.other.x, collision.other.y, collisions, collision_len = World:move(collision.other, destination_x, destination_y)
             end
+        end
+    end
+
+    if CurrentTargets > 0 and TotalTargets > 0 and CurrentTargets == TotalTargets then
+        CurrentLevel = CurrentLevel + 1
+        if CurrentLevel > #Levels then
+            Gamestate.switch(gamestates.winning)
+        else
+            GameScreen:load_level(Levels[CurrentLevel].filename)
         end
     end
 
