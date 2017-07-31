@@ -8,13 +8,6 @@ local Font = nil
 local PauseScreen = Gamestate.new()
 
 
-function PauseScreen:enter(from)
-    self.from = from
-    Font = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 32)
-    love.graphics.setFont(Font)
-end
-
-
 function PauseScreen:draw()
     local width = love.graphics.getWidth()
     local height = love.graphics.getHeight()
@@ -27,6 +20,13 @@ function PauseScreen:draw()
     love.graphics.setColor(255, 255, 255)
     love.graphics.printf('Pause', 0, height / 2, width, 'center')
     -- love.graphics.printf('Press Enter to continue', 16, 32)
+end
+
+
+function PauseScreen:enter(from)
+    self.from = from
+    Font = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 32)
+    love.graphics.setFont(Font)
 end
 
 

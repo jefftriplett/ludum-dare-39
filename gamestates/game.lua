@@ -1,5 +1,5 @@
 
--- GameScreen handles our main title screen
+-- GameScreen handles our actual game play
 
 local Anim8 = require('lib.vendor.anim8.anim8')
 local Bump = require('lib.vendor.bump.bump')
@@ -33,7 +33,37 @@ local Player = {
 }
 
 
--- GameScreen handles our actual game play
+function GameScreen:draw()
+    -- Draw hud
+    love.graphics.setColor(255, 255, 255)
+    -- love.graphics.setColor(89, 106, 108)
+    love.graphics.print('GameScreen:draw()', 16, 16)
+
+    fps = love.timer.getFPS()
+    love.graphics.print(
+        'fps: '..('%3d'):format(fps),
+        love.graphics.getWidth() - 96, -- eyeballed
+        16
+    )
+
+    love.graphics.print(
+        'Map Tile: (x:' .. ('%d'):format(Player.x / 64) .. ', y:' .. ('%d'):format(Player.y / 64) .. '); ' ..
+        'Player: (x:' .. ('%d'):format(Player.x) .. ', y:' .. ('%d'):format(Player.y) .. ')',
+        16,
+        32
+    )
+
+    -- Draw our Map
+    love.graphics.setColor(255, 255, 255)
+    Map:draw(0, 64)
+
+    -- Draw Collision Map (useful for debugging)
+    if Debug then
+        love.graphics.setColor(0, 0, 255)
+        Map:bump_draw(World, 0, 64, 1, 1)
+    end
+end
+
 
 function GameScreen:enter()
 
@@ -91,104 +121,6 @@ function GameScreen:enter()
 end
 
 
-function GameScreen:draw()
-    -- Draw hud
-    love.graphics.setColor(255, 255, 255)
-    -- love.graphics.setColor(89, 106, 108)
-    love.graphics.print('GameScreen:draw()', 16, 16)
-
-    fps = love.timer.getFPS()
-    love.graphics.print(
-        'fps: '..('%3d'):format(fps),
-        love.graphics.getWidth() - 96, -- eyeballed
-        16
-    )
-
-    love.graphics.print(
-        'Map Tile: (x:' .. ('%d'):format(Player.x / 64) .. ', y:' .. ('%d'):format(Player.y / 64) .. '); ' ..
-        'Player: (x:' .. ('%d'):format(Player.x) .. ', y:' .. ('%d'):format(Player.y) .. ')',
-        16,
-        32
-    )
-
-    -- Draw our Map
-    love.graphics.setColor(255, 255, 255)
-    Map:draw(0, 64)
-
-    -- Draw Collision Map (useful for debugging)
-    if Debug then
-        love.graphics.setColor(0, 0, 255)
-        Map:bump_draw(World, 0, 64, 1, 1)
-    end
-end
-
-
-function GameScreen:update(deltatime)
-    -- Update our Map to keep everything in sync
-    Map:update(deltatime)
-
-    -- We only want to animate the player animation when we are moving
-    animate_player = false
-
-    if love.keyboard.isDown('up') or love.keyboard.isDown('w') then
-        Player.y = Player.y - Player.speed * deltatime
-        Player.animation = Player.animations.up
-        animate_player = true
-    end
-
-    if love.keyboard.isDown('down') or love.keyboard.isDown('s') then
-        Player.y = Player.y + Player.speed * deltatime
-        Player.animation = Player.animations.down
-        animate_player = true
-    end
-
-    if love.keyboard.isDown('left') or love.keyboard.isDown('a') then
-        Player.x = Player.x - Player.speed * deltatime
-        Player.animation = Player.animations.left
-        animate_player = true
-    end
-
-    if love.keyboard.isDown('right') or love.keyboard.isDown('d') then
-        Player.x = Player.x + Player.speed * deltatime
-        Player.animation = Player.animations.right
-        animate_player = true
-    end
-
-    if animate_player then
-        Player.animation:update(deltatime)
-    end
-
-    Player.x, Player.y, collisions, collision_len = World:move(Player, Player.x, Player.y)
-    if collision_len > 0 then
-        if Debug then
-            print(collision_len)
-            print(Inspect(collisions))
-            for i=1,collision_len do
-                local collision = collisions[i]
-                print(collision.other)
-            end
-        end
-    end
-
-    -- TODO: Do something with this...
-    for i,v in ipairs (collisions) do
-        if collisions[i].normal.y == -1 then
-            -- player.yvel = 0
-            -- player.grounded = true
-            -- debug = debug.."Collided "
-            if Debug then
-                print('Collided')
-            end
-        elseif collisions[i].normal.y == 1 then
-            -- player.yvel = -player.yvel/4
-        end
-        if collisions[i].normal.x ~= 0 then
-            -- player.xvel = 0
-        end
-    end
-end
-
-
 function GameScreen:keypressed(key, code)
     if love.keyboard.isDown('escape') or love.keyboard.isDown('q') then
         love.event.quit()
@@ -243,12 +175,6 @@ function GameScreen:keypressed(key, code)
             GameScreen:load_level('levels/level0010.lua')
         end
     end
-end
-
-
-function GameScreen:quit()
-    print('Thank you for playing!')
-    return false
 end
 
 
@@ -327,7 +253,78 @@ function GameScreen:load_level(filename)
 
     -- Remove unneeded object layer
     Map:removeLayer('Spawn Point')
+end
 
+
+function GameScreen:quit()
+    print('Thank you for playing!')
+    return false
+end
+
+
+function GameScreen:update(deltatime)
+    -- Update our Map to keep everything in sync
+    Map:update(deltatime)
+
+    -- We only want to animate the player animation when we are moving
+    animate_player = false
+
+    if love.keyboard.isDown('up') or love.keyboard.isDown('w') then
+        Player.y = Player.y - Player.speed * deltatime
+        Player.animation = Player.animations.up
+        animate_player = true
+    end
+
+    if love.keyboard.isDown('down') or love.keyboard.isDown('s') then
+        Player.y = Player.y + Player.speed * deltatime
+        Player.animation = Player.animations.down
+        animate_player = true
+    end
+
+    if love.keyboard.isDown('left') or love.keyboard.isDown('a') then
+        Player.x = Player.x - Player.speed * deltatime
+        Player.animation = Player.animations.left
+        animate_player = true
+    end
+
+    if love.keyboard.isDown('right') or love.keyboard.isDown('d') then
+        Player.x = Player.x + Player.speed * deltatime
+        Player.animation = Player.animations.right
+        animate_player = true
+    end
+
+    if animate_player then
+        Player.animation:update(deltatime)
+    end
+
+    Player.x, Player.y, collisions, collision_len = World:move(Player, Player.x, Player.y)
+    if collision_len > 0 then
+        if Debug then
+            print(collision_len)
+            print(Inspect(collisions))
+            for i=1,collision_len do
+                local collision = collisions[i]
+                print(collision.other)
+            end
+        end
+    end
+
+    -- TODO: Do something with this...
+    for i,v in ipairs (collisions) do
+        if collisions[i].normal.y == -1 then
+            -- player.yvel = 0
+            -- player.grounded = true
+            -- debug = debug.."Collided "
+            if Debug then
+                print('Collided')
+            end
+        elseif collisions[i].normal.y == 1 then
+            -- player.yvel = -player.yvel/4
+        end
+        if collisions[i].normal.x ~= 0 then
+            -- player.xvel = 0
+        end
+    end
 end
 
 
