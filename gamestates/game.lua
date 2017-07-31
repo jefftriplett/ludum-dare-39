@@ -87,72 +87,7 @@ function GameScreen:enter()
 
     love.physics.setMeter(32)
 
-    Map = Sti('levels/level0001.lua', {'bump'})
-
-    World = Bump.newWorld(64)
-
-    -- Prepare collision objects
-    Map:bump_init(World)
-
-    Map:addCustomLayer('Sprite Layer', 4)
-
-    local sprite_layer = Map.layers['Sprite Layer']
-
-    for k, object in pairs(Map.objects) do
-        print(Inspect(object))
-        if object.name == 'Player' then
-            spawn_point = object
-            Player.x = spawn_point.x
-            Player.y = spawn_point.y
-            World:add(Player, Player.x, Player.y, Player.width, Player.height)
-            break
-        end
-    end
-
-    -- Attach our player to the Map layer
-    sprite_layer.sprites = {
-        player = Player
-    }
-
-    -- Update callback for Custom Layer
-    function sprite_layer:update(deltatime)
-        for _, sprite in pairs(self.sprites) do
-            -- if sprite.rotation then
-            --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
-            -- end
-        end
-    end
-
-    -- Draw callback for Custom Layer
-    function sprite_layer:draw()
-        for _, sprite in pairs(self.sprites) do
-            Player.animation:draw(
-                sprite.spritesheet,
-                math.floor(sprite.x),
-                math.floor(sprite.y),
-                sprite.rotation,
-                1,
-                1,
-                sprite.offset_x,
-                sprite.offset_y
-            )
-
-            -- Temporarily draw a point at our location so we know
-            -- that our sprite is offset properly
-            if Debug then
-                love.graphics.rectangle(
-                    'fill',
-                    math.floor(sprite.x),
-                    math.floor(sprite.y),
-                    math.floor(sprite.width),
-                    math.floor(sprite.height)
-                )
-            end
-        end
-    end
-
-    -- Remove unneeded object layer
-    Map:removeLayer('Spawn Point')
+    GameScreen:load_level('levels/level0001.lua')
 end
 
 
@@ -266,12 +201,129 @@ function GameScreen:keypressed(key, code)
     if love.keyboard.isDown('p') then
         Gamestate.push(gamestates.pause)
     end
+
+    if Debug then
+        if love.keyboard.isDown('1') then
+            GameScreen:load_level('levels/level0001.lua')
+        end
+
+        if love.keyboard.isDown('2') then
+            GameScreen:load_level('levels/level0002.lua')
+        end
+
+        if love.keyboard.isDown('3') then
+            GameScreen:load_level('levels/level0003.lua')
+        end
+
+        if love.keyboard.isDown('4') then
+            GameScreen:load_level('levels/level0004.lua')
+        end
+
+        if love.keyboard.isDown('5') then
+            GameScreen:load_level('levels/level0005.lua')
+        end
+
+        if love.keyboard.isDown('6') then
+            GameScreen:load_level('levels/level0006.lua')
+        end
+
+        if love.keyboard.isDown('7') then
+            GameScreen:load_level('levels/level0007.lua')
+        end
+
+        if love.keyboard.isDown('8') then
+            GameScreen:load_level('levels/level0008.lua')
+        end
+
+        if love.keyboard.isDown('9') then
+            GameScreen:load_level('levels/level0009.lua')
+        end
+
+        if love.keyboard.isDown('0') then
+            GameScreen:load_level('levels/level0010.lua')
+        end
+    end
 end
 
 
 function GameScreen:quit()
     print('Thank you for playing!')
     return false
+end
+
+
+function GameScreen:load_level(filename)
+    Map = Sti(filename, {'bump'})
+
+    World = Bump.newWorld(32)
+
+    -- Prepare collision objects
+    Map:bump_init(World)
+
+    Map:addCustomLayer('Sprite Layer', 4)
+
+    local sprite_layer = Map.layers['Sprite Layer']
+
+    local object_group = Map.layers['objectgroup']
+
+    print(Inspect(object_group.objects))
+
+    for k, object in pairs(Map.objects) do
+        print(Inspect(object))
+        if object.name == 'Player' then
+            spawn_point = object
+            Player.x = spawn_point.x
+            Player.y = spawn_point.y
+            World:add(Player, Player.x, Player.y, Player.width, Player.height)
+            break
+        end
+    end
+
+    -- Attach our player to the Map layer
+    sprite_layer.sprites = {
+        player = Player
+    }
+
+    -- Update callback for Custom Layer
+    function sprite_layer:update(deltatime)
+        for _, sprite in pairs(self.sprites) do
+            -- if sprite.rotation then
+            --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
+            -- end
+        end
+    end
+
+    -- Draw callback for Custom Layer
+    function sprite_layer:draw()
+        for _, sprite in pairs(self.sprites) do
+            Player.animation:draw(
+                sprite.spritesheet,
+                math.floor(sprite.x),
+                math.floor(sprite.y),
+                sprite.rotation,
+                1,
+                1,
+                sprite.offset_x,
+                sprite.offset_y
+            )
+
+            -- Temporarily draw a point at our location so we know
+            -- that our sprite is offset properly
+            if Debug then
+                love.graphics.rectangle(
+                    'fill',
+                    math.floor(sprite.x),
+                    math.floor(sprite.y),
+                    math.floor(sprite.width),
+                    math.floor(sprite.height)
+                )
+            end
+        end
+    end
+
+    -- Remove unneeded object layer
+    Map:removeLayer('Spawn Point')
+
 end
 
 
