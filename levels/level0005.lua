@@ -1,14 +1,14 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "0.18.2",
+  tiledversion = "1.0.1",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 8,
   height = 7,
   tilewidth = 64,
   tileheight = 64,
-  nextobjectid = 6,
+  nextobjectid = 10,
   properties = {},
   tilesets = {
     {
@@ -25,6 +25,11 @@ return {
       tileoffset = {
         x = 0,
         y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 64,
+        height = 64
       },
       properties = {
         ["collidable"] = false
@@ -940,31 +945,6 @@ return {
       }
     },
     {
-      type = "tilelayer",
-      name = "objectgroup",
-      x = 0,
-      y = 0,
-      width = 8,
-      height = 7,
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      properties = {
-        ["collidable"] = "true"
-      },
-      encoding = "lua",
-      data = {
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 7, 0, 0, 0,
-        0, 0, 0, 7, 0, 7, 0, 0,
-        0, 0, 0, 0, 7, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0
-      }
-    },
-    {
       type = "objectgroup",
       name = "Spawn Point",
       visible = true,
@@ -988,6 +968,58 @@ return {
           properties = {
             ["collidable"] = false
           }
+        },
+        {
+          id = 6,
+          name = "",
+          type = "Box",
+          shape = "rectangle",
+          x = 256,
+          y = 128,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 7,
+          name = "",
+          type = "Box",
+          shape = "rectangle",
+          x = 320,
+          y = 192,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "",
+          type = "Box",
+          shape = "rectangle",
+          x = 192,
+          y = 192,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 9,
+          name = "",
+          type = "Box",
+          shape = "rectangle",
+          x = 256,
+          y = 256,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     }

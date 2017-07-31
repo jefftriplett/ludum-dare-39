@@ -1,14 +1,14 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "0.18.2",
+  tiledversion = "1.0.1",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 6,
   height = 7,
   tilewidth = 64,
   tileheight = 64,
-  nextobjectid = 7,
+  nextobjectid = 9,
   properties = {},
   tilesets = {
     {
@@ -25,6 +25,11 @@ return {
       tileoffset = {
         x = 0,
         y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 64,
+        height = 64
       },
       properties = {
         ["collidable"] = false
@@ -940,31 +945,6 @@ return {
       }
     },
     {
-      type = "tilelayer",
-      name = "objectgroup",
-      x = 0,
-      y = 0,
-      width = 6,
-      height = 7,
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      properties = {
-        ["collidable"] = "true"
-      },
-      encoding = "lua",
-      data = {
-        0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0,
-        0, 0, 7, 7, 0, 0,
-        0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0
-      }
-    },
-    {
       type = "objectgroup",
       name = "Spawn Point",
       visible = true,
@@ -977,7 +957,7 @@ return {
         {
           id = 6,
           name = "Player",
-          type = "",
+          type = "Box",
           shape = "rectangle",
           x = 64,
           y = 128,
@@ -988,6 +968,32 @@ return {
           properties = {
             ["collidable"] = false
           }
+        },
+        {
+          id = 7,
+          name = "",
+          type = "Box",
+          shape = "rectangle",
+          x = 128,
+          y = 128,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "",
+          type = "Box",
+          shape = "rectangle",
+          x = 192,
+          y = 128,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     }
