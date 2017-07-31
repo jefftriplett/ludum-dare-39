@@ -19,7 +19,7 @@ return {
       tileheight = 64,
       spacing = 0,
       margin = 0,
-      image = "../images/sokoban_tilesheet.png",
+      image = "../assets/images/sokoban_tilesheet.png",
       imagewidth = 832,
       imageheight = 512,
       tileoffset = {

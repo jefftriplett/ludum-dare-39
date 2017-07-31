@@ -13,7 +13,7 @@ local GameScreen = Gamestate.new()
 local Font = nil
 local Map = nil
 local World = nil
-local Debug = true  -- TODO: Change before release
+local Debug = false  -- TODO: Change before release
 
 local Player = {
     x = nil,
@@ -87,7 +87,7 @@ function GameScreen:enter()
 
     love.physics.setMeter(32)
 
-    Map = Sti('assets/levels/level0001.lua', {'bump'})
+    Map = Sti('levels/level0001.lua', {'bump'})
 
     World = Bump.newWorld(64)
 
@@ -99,6 +99,7 @@ function GameScreen:enter()
     local sprite_layer = Map.layers['Sprite Layer']
 
     for k, object in pairs(Map.objects) do
+        print(Inspect(object))
         if object.name == 'Player' then
             spawn_point = object
             Player.x = spawn_point.x
@@ -257,7 +258,7 @@ function GameScreen:keypressed(key, code)
         love.event.quit()
     end
 
-    if love.keyboard.isDown('tab') then
+    if love.keyboard.isDown('`') or love.keyboard.isDown('tab') then
         Debug = not Debug
     end
 
