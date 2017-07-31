@@ -126,6 +126,12 @@ function Entity:initialize()
 end
 
 
+function Entity:tile_id()
+    return (math.floor(self.x / 64 ) + 1)
+        + (math.floor(self.y / 64) + 1) * Map.width
+        + 1
+end
+
 local Box = Class('Box', Entity)
 
 function Box:initialize()
@@ -148,7 +154,7 @@ function GameScreen:draw()
     )
 
     love.graphics.print(
-        'Map Tile: (x:' .. ('%d'):format(Player.x / 64) .. ', y:' .. ('%d'):format(Player.y / 64) .. '); ' ..
+        'Map Tile: (x:' .. ('%d'):format(Player.x / 64 + 1) .. ', y:' .. ('%d'):format(Player.y / 64 + 1) .. '); ' ..
         'Player: (x:' .. ('%d'):format(Player.x) .. ', y:' .. ('%d'):format(Player.y) .. ')',
         16,
         32
@@ -219,42 +225,6 @@ function GameScreen:enter()
     love.physics.setMeter(32)
 
     GameScreen:load_level(Levels[CurrentLevel].filename)
-
-    local sprite_layer = Map.layers['Sprite Layer']
-    local target_group = Map.layers['targets']
-
-    -- TODO: We need to refactor / move this target finding code
-
-    Targets = {}
-
-    print('v================================================================')
-    print(Inspect(target_group))
-    print('v----------------------------------------------------------------')
-    print('height: ' .. target_group.height)
-    print('width:  ' .. target_group.width)
-    for y, target in ipairs(target_group.data) do
-        if next(target) ~= nil then
-            print('index: ' .. y)
-            print(Inspect(target))
-
-            for x, tile in pairs(target) do
-                tile_index = x + y * target_group.width + 1
-                print('x: ' .. x)
-                print('y: ' .. y)
-                print('width:' .. target_group.width)
-                print('tile index:' .. tile_index)
-                print('is_target:', tile.properties.target)
-                print(tile.gid)
-                -- tile.gid = 27
-                Targets[tile_index] = tile
-                -- target_group.data[tile_index] = 27
-            end
-        end
-    end
-
-    print('Targets:')
-    print(Inspect(Targets))
-    print('^----------------------------------------------------------------')
 end
 
 
@@ -271,7 +241,7 @@ function GameScreen:keypressed(key, code)
         Gamestate.push(gamestates.pause)
     end
 
-    if Debug then
+    -- if Debug then
         if love.keyboard.isDown('1') then
             CurrentLevel = 1
             GameScreen:load_level(Levels[CurrentLevel].filename)
@@ -321,7 +291,7 @@ function GameScreen:keypressed(key, code)
             CurrentLevel = 10
             GameScreen:load_level(Levels[CurrentLevel].filename)
         end
-    end
+    -- end
 end
 
 
@@ -330,8 +300,7 @@ function GameScreen:load_level(filename)
 
     World = Bump.newWorld(32)
 
-    -- Reset Entities to keep from accum
-    Entities = nil
+    -- Reset to keep from accumulating entities from other levels
     Entities = {}
 
     -- Prepare collision objects
@@ -366,6 +335,15 @@ function GameScreen:load_level(filename)
     -- Update callback for Custom Layer
     function sprite_layer:update(deltatime)
         for _, sprite in pairs(self.sprites) do
+            if sprite.type ~= 'player' then
+                for _, entity_sprite in pairs(sprite) do
+                    if Targets[entity_sprite:tile_id()] ~= nil then
+                        entity_sprite.animation = entity_sprite.animations.on_target
+                    else
+                        entity_sprite.animation = entity_sprite.animations.default
+                    end
+                end
+            end
             -- if sprite.rotation then
             --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
             -- end
@@ -429,6 +407,22 @@ function GameScreen:load_level(filename)
 
     -- Remove unneeded object layer
     Map:removeLayer('Spawn Point')
+
+    local sprite_layer = Map.layers['Sprite Layer']
+    local target_group = Map.layers['targets']
+
+    -- TODO: We need to refactor / move this target finding code
+
+    Targets = {}
+
+    for y, target in ipairs(target_group.data) do
+        if next(target) ~= nil then
+            for x, tile in pairs(target) do
+                tile_index = x + (y * target_group.width) + 1
+                Targets[tile_index] = true
+            end
+        end
+    end
 end
 
 
@@ -469,20 +463,14 @@ function GameScreen:update(deltatime)
 
     Player.x, Player.y, collisions, collision_len = World:move(Player, Player.x, Player.y)
     if collision_len > 0 then
-        -- print(Inspect(collisions))
         for i=1,collision_len do
             local collision = collisions[i]
-            -- print(collision.other.id)
-            -- print(collision.other.type)
-            -- print(collision.other.properties.movable)
-            -- print(collision.other.y)
             if collision and collision.other.properties.movable then
                 destination_x = collision.other.x
                 destination_y = collision.other.y
 
                 object_group = Map.objects
                 for _, sprite in pairs(object_group) do
-                    -- print(sprite.x == collision.other.x and sprite.y == collision.other.y)
                     -- if sprite.rotation then
                     --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
                     -- end
@@ -509,21 +497,21 @@ function GameScreen:update(deltatime)
     end
 
     -- TODO: Do something with this...
-    for i,v in ipairs (collisions) do
-        if collisions[i].normal.y == -1 then
-            -- player.yvel = 0
-            -- player.grounded = true
-            -- debug = debug.."Collided "
-            if Debug then
-                print('Collided')
-            end
-        elseif collisions[i].normal.y == 1 then
-            -- player.yvel = -player.yvel/4
-        end
-        if collisions[i].normal.x ~= 0 then
-            -- player.xvel = 0
-        end
-    end
+    -- for i,v in ipairs (collisions) do
+    --     if collisions[i].normal.y == -1 then
+    --         -- player.yvel = 0
+    --         -- player.grounded = true
+    --         -- debug = debug.."Collided "
+    --         if Debug then
+    --             print('Collided')
+    --         end
+    --     elseif collisions[i].normal.y == 1 then
+    --         -- player.yvel = -player.yvel/4
+    --     end
+    --     if collisions[i].normal.x ~= 0 then
+    --         -- player.xvel = 0
+    --     end
+    -- end
 end
 
 
