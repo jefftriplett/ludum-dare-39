@@ -15,10 +15,23 @@ function TitleScreen:draw()
     local height = love.graphics.getHeight()
 
     love.graphics.setFont(TitleFont)
-    love.graphics.printf('LD39: Sokoban', 0, height / 3, width, 'center')
+
+    love.graphics.printf('LD39: Sokoban', 0, height / 5, width, 'center')
 
     love.graphics.setFont(SubTitleFont)
-    love.graphics.printf('Press Enter to continue', 0, (height / 3) * 2, width, 'center')
+
+    love.graphics.printf('', 0, height / 4 + 64, width, 'center')
+
+    love.graphics.printf(
+        'By Jeff Triplett\n' ..
+        'Graphics by Kenney Vleugels (Kenney.nl)\n\n' ..
+        'Arrow keys or WASD to move\n' ..
+        '"R" to restart the level\n' ..
+        '"1" - "0" to warp to another level\n' ..
+        '"P" to pause\n' ..
+        '"Q" to quit\n\n' ..
+        'Press Return or Enter to continue',
+        0, (height / 3), width, 'center')
 end
 
 
