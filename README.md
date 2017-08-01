@@ -1,4 +1,4 @@
-# Ludum Dare 39
+# Ludum Dare 39: Running out of Power aka "Sokoban" for me
 
 This is my first Ludum Dare 39. It has a Sokoban game heavily inspired by all Sokoban games before it.
 
