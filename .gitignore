@@ -82,3 +82,11 @@ luac.out
 
 # Our projects
 working
+
+# dist files
+dist/macos/sokoban-app-OSX.zip
+dist/sokoban-ANDROID.apk
+dist/sokoban-app-OSX.zip
+dist/sokoban-WIN.zip
+dist/sokoban.love
+dist/windows/Sokoban.exe
