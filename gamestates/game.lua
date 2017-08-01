@@ -11,6 +11,7 @@ local Sti = require('lib.vendor.sti')
 local GameScreen = Gamestate.new()
 
 local Font = nil
+local TitleFont = nil
 local Grid = nil
 local Map = nil
 local World = nil
@@ -156,31 +157,36 @@ function GameScreen:draw()
     -- Draw hud
     love.graphics.setColor(255, 255, 255)
     -- love.graphics.setColor(89, 106, 108)
+    love.graphics.setFont(TitleFont)
     love.graphics.print(Levels[CurrentLevel].title, 16, 16)
 
-    fps = love.timer.getFPS()
-    love.graphics.print(
-        'fps: '..('%3d'):format(fps),
-        love.graphics.getWidth() - 128, -- eyeballed
-        16
-    )
-    love.graphics.print(
-        'Targets: '..('%3d'):format(TotalTargets),
-        love.graphics.getWidth() - 128, -- eyeballed
-        32
-    )
-    love.graphics.print(
-        'Current: '..('%3d'):format(CurrentTargets),
-        love.graphics.getWidth() - 128, -- eyeballed
-        48
-    )
+    love.graphics.setFont(Font)
 
-    love.graphics.print(
-        'Map Tile: (x:' .. ('%d'):format(Player.x / 64 + 1) .. ', y:' .. ('%d'):format(Player.y / 64 + 1) .. '); ' ..
-        'Player: (x:' .. ('%d'):format(Player.x) .. ', y:' .. ('%d'):format(Player.y) .. ')',
-        16,
-        32
-    )
+    if Debug then
+        fps = love.timer.getFPS()
+        love.graphics.print(
+            'fps: '..('%3d'):format(fps),
+            love.graphics.getWidth() - 128, -- eyeballed
+            16
+        )
+        love.graphics.print(
+            'Targets: '..('%3d'):format(TotalTargets),
+            love.graphics.getWidth() - 128, -- eyeballed
+            16
+        )
+        love.graphics.print(
+            'Current: '..('%3d'):format(CurrentTargets),
+            love.graphics.getWidth() - 128, -- eyeballed
+            32
+        )
+
+        love.graphics.print(
+            'Map Tile: (x:' .. ('%d'):format(Player.x / 64 + 1) .. ', y:' .. ('%d'):format(Player.y / 64 + 1) .. '); ' ..
+            'Player: (x:' .. ('%d'):format(Player.x) .. ', y:' .. ('%d'):format(Player.y) .. ')',
+            16,
+            32
+        )
+    end
 
     -- Draw our Map
     love.graphics.setColor(255, 255, 255)
@@ -197,6 +203,8 @@ end
 function GameScreen:enter()
 
     Font = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 32)
+    TitleFont = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 64)
+
     love.graphics.setFont(Font)
 
     Player.spritesheet = love.graphics.newImage('assets/images/sokoban_tilesheet.png')
