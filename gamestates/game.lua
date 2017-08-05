@@ -2,6 +2,7 @@
 -- GameScreen handles our actual game play
 
 local Anim8 = require('lib.vendor.anim8.anim8')
+local Baton = require('lib.vendor.baton.baton')
 local Bump = require('lib.vendor.bump.bump')
 local Class = require('lib.vendor.middleclass.middleclass')
 local Gamestate = require('lib.vendor.hump.gamestate')
@@ -16,6 +17,50 @@ local Grid = nil
 local Map = nil
 local World = nil
 local Debug = false  -- TODO: Change before release
+
+
+local Controls = {
+    left = {
+        'key:left',
+        'key:a',
+        'axis:leftx-',
+        'button:dpleft'
+    },
+    right = {
+        'key:right',
+        'key:d',
+        'axis:leftx+',
+        'button:dpright'
+    },
+    up = {
+        'key:up',
+        'key:w',
+        'axis:lefty-',
+        'button:dpup'
+    },
+    down = {
+        'key:down',
+        'key:s',
+        'axis:lefty+',
+        'button:dpdown'
+    },
+    debug = {
+        'key:tab',
+        'key:`',
+    },
+    pause = {
+        'key:p',
+    },
+    quit = {
+        'key:escape',
+        'key:q',
+    },
+    reload = {
+        'key:r',
+    },
+}
+
+local Input = Baton.new(Controls, love.joystick.getJoysticks()[1])
 
 local Levels = {
     {
@@ -63,30 +108,17 @@ local Levels = {
 local StartingLevel = 1
 local CurrentLevel = StartingLevel
 
--- TODO: Turn our player into an Entity
-local Player = {
-    x = nil,
-    y = nil,
-    offset_x = 16,  -- I eyeballed the x and y to get "right"
-    offset_y = 32,
-    rotation = 0,
-    width = 32,
-    height = 16,
-    speed = 128,
-    type = 'player',
-    collidable = true,
-    sensor = true,
-    durations = 0.25,  -- or this can be {0.5, 0.1, ...} based on each frame
-    animation = nil,  -- our index for holding which Quad we are displaying
-    animations = nil,  -- our Quads
-    spritesheet = nil,  -- our image spritesheet which holds all of our images
-}
-
-local Targets = nil
 local Entities = nil
+local Targets = nil
 
-local TotalTargets = nil
 local CurrentTargets = nil
+local TotalTargets = nil
+
+local Player = nil
+
+local Spritesheet = love.graphics.newImage('assets/images/sokoban_tilesheet.png')
+local Grid = Anim8.newGrid(64, 64, Spritesheet:getWidth(), Spritesheet:getHeight())
+
 
 local Entity = Class('Entity')
 
@@ -106,27 +138,8 @@ function Entity:initialize()
     self.durations = 0.25  -- or this can be {0.5, 0.1, ...} based on each frame
     self.animation = nil  -- our index for holding which Quad we are displaying
     self.animations = nil  -- our Quads
-    self.spritesheet = nil  -- our image spritesheet which holds all of our images
     self.properties = {}
     self.properties.movable = true
-
-    self.animations = {
-        default = Anim8.newAnimation(
-            Grid(
-                2, 1,
-                2, 2
-            ),
-            self.durations
-        ),
-        on_target = Anim8.newAnimation(
-            Grid(
-                2, 2
-            ),
-            self.durations
-        )
-    }
-    self.animation = self.animations.default
-    self.spritesheet = Player.spritesheet
 end
 
 
@@ -144,12 +157,109 @@ function Entity:covers_target()
     end
 end
 
+-- TODO: Turn our player into an Entity
+local PlayerClass = Class('PlayerClass', Entity)
+
+function PlayerClass:initialize()
+    Entity.initialize(self)
+    self.offset_x = 16  -- I eyeballed the x and y to get "right"
+    self.offset_y = 32
+    self.rotation = 0
+    self.width = 32
+    self.height = 16
+    self.speed = 128
+    self.type = 'player'
+    -- self.collidable = true
+    -- self.sensor = true
+    self.durations = 0.25  -- or this can be {0.5, 0.1, ...} based on each frame
+    self.animations = {
+        down = Anim8.newAnimation(
+            Grid(
+                1, 6,
+                2, 6,
+                1, 6,
+                3, 6
+            ),
+            self.durations
+        ),
+        up = Anim8.newAnimation(
+            Grid(
+                4, 6,
+                5, 6,
+                4, 6,
+                6, 6
+            ),
+            self.durations
+        ),
+        right = Anim8.newAnimation(
+            Grid(
+                1, 8,
+                2, 8,
+                1, 8,
+                3, 8
+            ),
+            self.durations
+        ),
+        left = Anim8.newAnimation(
+            Grid(
+                4, 8,
+                5, 8,
+                4, 8,
+                5, 8
+            ),
+            self.durations
+        ),
+    }
+
+    -- Default player to facing us
+    self.animation = self.animations.down
+end
+
+
+function PlayerClass:up(deltatime)
+    self.y = self.y - self.speed * deltatime
+    self.animation = self.animations.up
+end
+
+
+function PlayerClass:down(deltatime)
+    self.y = self.y + self.speed * deltatime
+    self.animation = self.animations.down
+end
+
+
+function PlayerClass:left(deltatime)
+    self.x = self.x - self.speed * deltatime
+    self.animation = self.animations.left
+end
+
+
+function PlayerClass:right(deltatime)
+    self.x = self.x + self.speed * deltatime
+    self.animation = self.animations.right
+end
 
 local Box = Class('Box', Entity)
 
 function Box:initialize()
     Entity.initialize(self)
     self.type = 'box'
+    self.animations = {
+        default = Anim8.newAnimation(
+            Grid(
+                2, 1,
+                2, 2
+            ),
+            self.durations
+        ),
+        on_target = Anim8.newAnimation(
+            Grid(
+                2, 2
+            ),
+            self.durations
+        )
+    }
+    self.animation = self.animations.default
 end
 
 
@@ -179,7 +289,6 @@ function GameScreen:draw()
             love.graphics.getWidth() - 128, -- eyeballed
             32
         )
-
         love.graphics.print(
             'Map Tile: (x:' .. ('%d'):format(Player.x / 64 + 1) .. ', y:' .. ('%d'):format(Player.y / 64 + 1) .. '); ' ..
             'Player: (x:' .. ('%d'):format(Player.x) .. ', y:' .. ('%d'):format(Player.y) .. ')',
@@ -206,76 +315,17 @@ function GameScreen:enter()
     TitleFont = love.graphics.newFont('assets/fonts/Kenney Pixel.ttf', 64)
 
     love.graphics.setFont(Font)
-
-    Player.spritesheet = love.graphics.newImage('assets/images/sokoban_tilesheet.png')
-    Grid = Anim8.newGrid(64, 64, Player.spritesheet:getWidth(), Player.spritesheet:getHeight())
-
-    Player.animations = {
-        down = Anim8.newAnimation(
-            Grid(
-                1, 6,
-                2, 6,
-                1, 6,
-                3, 6
-            ),
-            Player.durations
-        ),
-        up = Anim8.newAnimation(
-            Grid(
-                4, 6,
-                5, 6,
-                4, 6,
-                6, 6
-            ),
-            Player.durations
-        ),
-        right = Anim8.newAnimation(
-            Grid(
-                1, 8,
-                2, 8,
-                1, 8,
-                3, 8
-            ),
-            Player.durations
-        ),
-        left = Anim8.newAnimation(
-            Grid(
-                4, 8,
-                5, 8,
-                4, 8,
-                5, 8
-            ),
-            Player.durations
-        ),
-    }
-
-    -- Default player to facing us
-    Player.animation = Player.animations.down
-
     love.physics.setMeter(32)
+
+    Player = PlayerClass()
 
     GameScreen:load_level(Levels[CurrentLevel].filename)
 end
 
 
 function GameScreen:keypressed(key, code)
-    if love.keyboard.isDown('escape') or love.keyboard.isDown('q') then
-        love.event.quit()
-    end
 
-    if love.keyboard.isDown('`') or love.keyboard.isDown('tab') then
-        Debug = not Debug
-    end
-
-    if love.keyboard.isDown('r') then
-        GameScreen:load_level(Levels[CurrentLevel].filename)
-    end
-
-    if love.keyboard.isDown('p') then
-        Gamestate.push(gamestates.pause)
-    end
-
-    -- if Debug then
+    if Debug then
         if love.keyboard.isDown('1') then
             CurrentLevel = 1
             GameScreen:load_level(Levels[CurrentLevel].filename)
@@ -325,7 +375,7 @@ function GameScreen:keypressed(key, code)
             CurrentLevel = 10
             GameScreen:load_level(Levels[CurrentLevel].filename)
         end
-    -- end
+    end
 end
 
 
@@ -388,7 +438,7 @@ function GameScreen:load_level(filename)
         for _, sprite in pairs(self.sprites) do
             if sprite.type == 'player' then
                 Player.animation:draw(
-                    sprite.spritesheet,
+                    Spritesheet,
                     math.floor(sprite.x),
                     math.floor(sprite.y),
                     sprite.rotation,
@@ -400,7 +450,7 @@ function GameScreen:load_level(filename)
             else
                 for _, entity_sprite in pairs(sprite) do
                     entity_sprite.animation:draw(
-                        entity_sprite.spritesheet,
+                        Spritesheet,
                         math.floor(entity_sprite.x),
                         math.floor(entity_sprite.y),
                         entity_sprite.rotation,
@@ -469,27 +519,41 @@ end
 
 
 function GameScreen:update(deltatime)
+    Input:update()
+
     -- Update our Map to keep everything in sync
     Map:update(deltatime)
 
     -- We only want to animate the player animation when we are moving
     animate_player = false
 
-    if love.keyboard.isDown('up') or love.keyboard.isDown('w') then
-        Player.y = Player.y - Player.speed * deltatime
-        Player.animation = Player.animations.up
+    if Input:pressed 'debug' then
+        Debug = not Debug
+    end
+
+    if Input:pressed 'pause' then
+        Gamestate.push(gamestates.pause)
+    end
+
+    if Input:pressed 'quit' then
+        love.event.quit()
+    end
+
+    if Input:pressed 'reload' then
+        GameScreen:load_level(Levels[CurrentLevel].filename)
+    end
+
+    if Input:down 'up' then
+        Player:up(deltatime)
         animate_player = true
-    elseif love.keyboard.isDown('down') or love.keyboard.isDown('s') then
-        Player.y = Player.y + Player.speed * deltatime
-        Player.animation = Player.animations.down
+    elseif Input:down 'down' then
+        Player:down(deltatime)
         animate_player = true
-    elseif love.keyboard.isDown('left') or love.keyboard.isDown('a') then
-        Player.x = Player.x - Player.speed * deltatime
-        Player.animation = Player.animations.left
+    elseif Input:down 'left' then
+        Player:left(deltatime)
         animate_player = true
-    elseif love.keyboard.isDown('right') or love.keyboard.isDown('d') then
-        Player.x = Player.x + Player.speed * deltatime
-        Player.animation = Player.animations.right
+    elseif Input:down 'right' then
+        Player:right(deltatime)
         animate_player = true
     end
 
@@ -505,12 +569,12 @@ function GameScreen:update(deltatime)
                 destination_x = collision.other.x
                 destination_y = collision.other.y
 
-                object_group = Map.objects
-                for _, sprite in pairs(object_group) do
-                    -- if sprite.rotation then
-                    --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
-                    -- end
-                end
+                -- object_group = Map.objects
+                -- for _, sprite in pairs(object_group) do
+                --     -- if sprite.rotation then
+                --     --     sprite.rotation = sprite.rotation + math.rad(90 * deltatime)
+                --     -- end
+                -- end
 
                 -- print(Map:convertPixelToTile(collision.other.x, collision.other.y))
 
